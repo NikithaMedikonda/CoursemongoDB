@@ -22,6 +22,7 @@ export const courseSchema = new mongoose.Schema ({
     name: {
         type: String,
         required: true,
+        //unique: true,
         validate: {  
             validator: function(v: string) {
                 const course = (this as any).level as courseLevel;

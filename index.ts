@@ -30,23 +30,19 @@ const insertRecord = async (data: any) => {
         let course = await Course.findOne({ name, level });
         if (!course) {
             course = await Course.create({ name, level });
-            console.log(`Inserted course: ${name} (${level})`);
         }
-
         if (prelevel && prename) {
             let preCourse = await Course.findOne({ name: prename, level: prelevel });
-            if (!preCourse) {
-                preCourse = await Course.create({ name: prename, level: prelevel });
-                console.log(`Created prerequisite course: ${prename} (${prelevel})`);
-            } else if (preCourse) {
+            if (preCourse) {
                 course.prerequisites.push(preCourse._id);
                 await course.save();
+                console.log(course)
                 console.log(`Inserted course: ${name} (${level}) with prerequisite: ${prename} (${prelevel})`);
             } else {
                 console.error(`Failed to find or create prerequisite course: ${prename} (${prelevel})`);
             }
         } else {
-            console.log(`Inserted course without prerequisites: ${name} (${level})`);
+                console.log(`Inserted course without prerequisites: ${name} (${level})`);
         }
     } catch (error) {
         console.error("Error inserting course:", error);
@@ -65,10 +61,8 @@ const insert = async () => {
     } 
 };
 
-// insert();
+ insert();
 
 app.listen(3000,() => {
     console.log(`Server is running on http://localhost:`);
 });
-
-
